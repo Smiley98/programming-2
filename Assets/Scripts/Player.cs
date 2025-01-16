@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public enum WeaponType
 {
@@ -60,11 +61,20 @@ public class Player : MonoBehaviour
         // Shoot in mouse direction
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            // Create bullet and offset it to be spawned outside of the player
-            GameObject bullet = Instantiate(bulletPrefab);
-            bullet.transform.position = transform.position + mouseDirection * 0.75f;
-            bullet.GetComponent<Rigidbody2D>().velocity = mouseDirection * bulletSpeed;
-            Destroy(bullet, 1.0f);
+            switch (weaponType)
+            {
+                case WeaponType.RIFLE:
+                    ShootRifle(mouseDirection);
+                    break;
+
+                case WeaponType.SHOTGUN:
+                    ShootShotgun(mouseDirection);
+                    break;
+
+                case WeaponType.GRENADE:
+                    ShootGrenade(mouseDirection);
+                    break;
+            }
         }
 
         // Cycle weapon
@@ -75,5 +85,24 @@ public class Player : MonoBehaviour
             weaponNumber %= (int)WeaponType.COUNT;
             weaponType = (WeaponType)weaponNumber;
         }
+    }
+
+    void ShootRifle(Vector3 direction)
+    {
+        // Create bullet and offset it to be spawned outside of the player
+        GameObject bullet = Instantiate(bulletPrefab);
+        bullet.transform.position = transform.position + direction * 0.75f;
+        bullet.GetComponent<Rigidbody2D>().velocity = direction * bulletSpeed;
+        Destroy(bullet, 1.0f);
+    }
+
+    void ShootShotgun(Vector3 direction)
+    {
+        Debug.Log("*Insert shotgun-shooting code here*");
+    }
+
+    void ShootGrenade(Vector3 direction)
+    {
+        Debug.Log("*Insert grenade-shooting code here*");
     }
 }
