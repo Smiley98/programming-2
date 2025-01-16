@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public enum WeaponType
 {
@@ -57,10 +58,20 @@ public class Player : MonoBehaviour
         // Shoot weapon with space
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            GameObject bullet = Instantiate(bulletPrefab);
-            bullet.transform.position = transform.position + mouseDirection * 0.75f;
-            bullet.GetComponent<Rigidbody2D>().velocity = mouseDirection * bulletSpeed;
-            Destroy(bullet, 1.0f);
+            switch (weaponType)
+            {
+                case WeaponType.RIFLE:
+                    ShootRifle(mouseDirection);
+                    break;
+
+                case WeaponType.SHOTGUN:
+                    ShootShotgun(mouseDirection);
+                    break;
+
+                case WeaponType.GRENADE:
+                    ShootGrenade(mouseDirection);
+                    break;
+            }
         }
 
         // Cycle weapon with left-shift
@@ -71,5 +82,23 @@ public class Player : MonoBehaviour
             weaponType = (WeaponType)weaponNumber;
             Debug.Log("Selected weapon: " + weaponType);
         }
+    }
+
+    void ShootRifle(Vector3 direction)
+    {
+        GameObject bullet = Instantiate(bulletPrefab);
+        bullet.transform.position = transform.position + direction * 0.75f;
+        bullet.GetComponent<Rigidbody2D>().velocity = direction * bulletSpeed;
+        Destroy(bullet, 1.0f);
+    }
+
+    void ShootShotgun(Vector3 direction)
+    {
+        Debug.Log("Shotgun not implemented");
+    }
+
+    void ShootGrenade(Vector3 direction)
+    {
+        Debug.Log("Grenade not implemented");
     }
 }
