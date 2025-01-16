@@ -1,5 +1,13 @@
 using UnityEngine;
 
+public enum WeaponType
+{
+    RIFLE,
+    SHOTGUN,
+    GRENADE,
+    COUNT
+}
+
 public class Player : MonoBehaviour
 {
     // Makes variable available in the inspector, but NOT in other scripts
@@ -8,6 +16,8 @@ public class Player : MonoBehaviour
 
     float moveSpeed = 5.0f;
     float bulletSpeed = 10.0f;
+
+    WeaponType weaponType = WeaponType.RIFLE;
 
     void Start()
     {
@@ -55,6 +65,15 @@ public class Player : MonoBehaviour
             bullet.transform.position = transform.position + mouseDirection * 0.75f;
             bullet.GetComponent<Rigidbody2D>().velocity = mouseDirection * bulletSpeed;
             Destroy(bullet, 1.0f);
+        }
+
+        // Cycle weapon
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            int weaponNumber = (int)weaponType;
+            weaponNumber++;
+            weaponNumber %= (int)WeaponType.COUNT;
+            weaponType = (WeaponType)weaponNumber;
         }
     }
 }
