@@ -2,6 +2,10 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    [SerializeField]
+    GameObject bulletPrefab;
+
+    float bulletSpeed = 10.0f;
     float moveSpeed = 5.0f;
 
     void Start()
@@ -39,5 +43,13 @@ public class Player : MonoBehaviour
         mouse.z = 0.0f;
         Vector3 mouseDirection = (mouse - transform.position).normalized;
         Debug.DrawLine(transform.position, transform.position + mouseDirection * 5.0f);
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            GameObject bullet = Instantiate(bulletPrefab);
+            bullet.transform.position = transform.position + mouseDirection * 0.75f;
+            bullet.GetComponent<Rigidbody2D>().velocity = mouseDirection * bulletSpeed;
+            Destroy(bullet, 1.0f);
+        }
     }
 }
