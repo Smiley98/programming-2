@@ -2,7 +2,12 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    // Makes variable available in the inspector, but NOT in other scripts
+    [SerializeField]
+    GameObject bulletPrefab;
+
     float moveSpeed = 5.0f;
+    float bulletSpeed = 10.0f;
 
     void Start()
     {
@@ -38,9 +43,18 @@ public class Player : MonoBehaviour
         Vector3 mouse = Input.mousePosition;
         mouse = Camera.main.ScreenToWorldPoint(mouse);
         mouse.z = 0.0f;
-
         Vector3 mouseDirection = (mouse - transform.position).normalized;
         Debug.DrawLine(transform.position, transform.position + mouseDirection * 5.0f);
-        
+
+        // Optional task: use a timer to fire a bullet every 0.5 seconds when space is held
+        // Shoot in mouse direction
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            // Create bullet and offset it to be spawned outside of the player
+            GameObject bullet = Instantiate(bulletPrefab);
+            bullet.transform.position = transform.position + mouseDirection * 0.75f;
+            bullet.GetComponent<Rigidbody2D>().velocity = mouseDirection * bulletSpeed;
+            Destroy(bullet, 1.0f);
+        }
     }
 }
