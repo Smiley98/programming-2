@@ -98,11 +98,31 @@ public class Player : MonoBehaviour
 
     void ShootShotgun(Vector3 direction)
     {
-        Debug.Log("*Insert shotgun-shooting code here*");
+        GameObject bullet = Instantiate(bulletPrefab);
+        GameObject bulletLeft = Instantiate(bulletPrefab);
+        GameObject bulletRight = Instantiate(bulletPrefab);
+
+        // A quaternion is a "rotation". You can apply a rotation to a direction with multiplication.
+        Vector3 directionLeft = Quaternion.Euler(0.0f, 0.0f, 30.0f) * direction;
+        Vector3 directionRight = Quaternion.Euler(0.0f, 0.0f, -30.0f) * direction;
+
+        // Position bullets forward/left/right
+        bullet.transform.position = transform.position + direction * 0.75f;
+        bulletLeft.transform.position = transform.position + directionLeft * 0.75f;
+        bulletRight.transform.position = transform.position + directionRight * 0.75f;
+
+        // Move bullets forward/left/right
+        bullet.GetComponent<Rigidbody2D>().velocity = direction * bulletSpeed;
+        bulletLeft.GetComponent<Rigidbody2D>().velocity = directionLeft * bulletSpeed;
+        bulletRight.GetComponent<Rigidbody2D>().velocity = directionRight * bulletSpeed;
+
+        Destroy(bullet, 1.0f);
+        Destroy(bulletLeft, 1.0f);
+        Destroy(bulletRight, 1.0f);
     }
 
     void ShootGrenade(Vector3 direction)
     {
-        Debug.Log("*Insert grenade-shooting code here*");
+        
     }
 }
