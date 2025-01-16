@@ -15,6 +15,9 @@ public class Player : MonoBehaviour
     [SerializeField]
     GameObject bulletPrefab;
 
+    [SerializeField]
+    GameObject grenadePrefab;
+
     float moveSpeed = 5.0f;
     float bulletSpeed = 10.0f;
 
@@ -93,6 +96,7 @@ public class Player : MonoBehaviour
         GameObject bullet = Instantiate(bulletPrefab);
         bullet.transform.position = transform.position + direction * 0.75f;
         bullet.GetComponent<Rigidbody2D>().velocity = direction * bulletSpeed;
+        bullet.GetComponent<SpriteRenderer>().color = Color.red;
         Destroy(bullet, 1.0f);
     }
 
@@ -115,6 +119,10 @@ public class Player : MonoBehaviour
         bullet.GetComponent<Rigidbody2D>().velocity = direction * bulletSpeed;
         bulletLeft.GetComponent<Rigidbody2D>().velocity = directionLeft * bulletSpeed;
         bulletRight.GetComponent<Rigidbody2D>().velocity = directionRight * bulletSpeed;
+        
+        bullet.GetComponent<SpriteRenderer>().color = Color.green;
+        bulletLeft.GetComponent<SpriteRenderer>().color = Color.green;
+        bulletRight.GetComponent<SpriteRenderer>().color = Color.green;
 
         Destroy(bullet, 1.0f);
         Destroy(bulletLeft, 1.0f);
@@ -123,6 +131,10 @@ public class Player : MonoBehaviour
 
     void ShootGrenade(Vector3 direction)
     {
-        
+        GameObject grenade = Instantiate(grenadePrefab);
+        grenade.transform.position = transform.position + direction;
+        grenade.GetComponent<Rigidbody2D>().velocity = direction * bulletSpeed;
+        grenade.GetComponent<SpriteRenderer>().color = Color.blue;
+        Destroy(grenade, 0.5f);
     }
 }
