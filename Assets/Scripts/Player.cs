@@ -33,6 +33,11 @@ public class Player : MonoBehaviour
         Vector3 movement = direction * moveSpeed * Time.deltaTime;
         transform.position += movement;
 
-
+        // Aiming with mouse cursor
+        Vector3 mouse = Input.mousePosition;
+        mouse = Camera.main.ScreenToWorldPoint(mouse);
+        mouse.z = 0.0f;
+        Vector3 mouseDirection = (mouse - transform.position).normalized;
+        Debug.DrawLine(transform.position, transform.position + mouseDirection * 5.0f);
     }
 }
