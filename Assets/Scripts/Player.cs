@@ -14,16 +14,18 @@ public class Player : MonoBehaviour
     [SerializeField]
     GameObject bulletPrefab;
 
+    [SerializeField]
+    GameObject grenadePrefab;
+
     float bulletSpeed = 10.0f;
     float moveSpeed = 5.0f;
 
     WeaponType weaponType = WeaponType.RIFLE;
 
-    void Start()
-    {
-        
-    }
-
+    // Optional tasks (next week homework will be assigned based on this code):
+    // 1. Fire weapons automatically based on a timer instead of on-key-press.
+    // 2. Give each weapon a reload duration and disable them until reloaded.
+    // 3. Give each projectile a damage value, spawn targets with health values, apply damage to targets on-collision.
     void Update()
     {
         // Directional movement
@@ -89,6 +91,7 @@ public class Player : MonoBehaviour
         GameObject bullet = Instantiate(bulletPrefab);
         bullet.transform.position = transform.position + direction * 0.75f;
         bullet.GetComponent<Rigidbody2D>().velocity = direction * bulletSpeed;
+        bullet.GetComponent<SpriteRenderer>().color = Color.red;
         Destroy(bullet, 1.0f);
     }
 
@@ -109,6 +112,10 @@ public class Player : MonoBehaviour
         bulletLeft.GetComponent<Rigidbody2D>().velocity = directionLeft * bulletSpeed;
         bulletRight.GetComponent<Rigidbody2D>().velocity = directionRight * bulletSpeed;
 
+        bullet.GetComponent <SpriteRenderer>().color = Color.green;
+        bulletLeft.GetComponent <SpriteRenderer>().color = Color.green;
+        bulletRight.GetComponent <SpriteRenderer>().color = Color.green;
+
         Destroy(bullet, 1.0f);
         Destroy(bulletLeft, 1.0f);
         Destroy(bulletRight, 1.0f);
@@ -116,6 +123,9 @@ public class Player : MonoBehaviour
 
     void ShootGrenade(Vector3 direction)
     {
-        Debug.Log("Grenade not implemented");
+        GameObject grenade = Instantiate(grenadePrefab);
+        grenade.transform.position = transform.position + direction * 0.75f;
+        grenade.GetComponent<Rigidbody2D>().velocity = direction * bulletSpeed;
+        Destroy(grenade, 1.0f);
     }
 }
