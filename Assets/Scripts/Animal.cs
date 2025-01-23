@@ -2,51 +2,77 @@ using UnityEngine;
 
 public class Animal
 {
+    public float weight;
+    public float speed;
+    public Color color;
+    public int age;
     public float hunger;
-    public bool isOxygenated;
-    public float stoolCapacity;
-}
-
-public class Elephant : Animal
-{
-    // Only the elephant knows true power
-    // (private, so no other animals have access to this "coveted" information)
-    private const float ELEPHANT_DUMP = float.MaxValue;
-
-    public void TakeDump()
-    {
-        stoolCapacity = ELEPHANT_DUMP;
-    }
-}
-
-public class Lion : Animal
-{
-    public void Roar()
-    {
-        stoolCapacity = float.MaxValue / 2.0f;
-        Debug.Log("Now you know the real secret of the king of the jungle");
-        Debug.Log("Shout out to Katy Perry");
-    }
-}
-
-public class Giraffe : Animal
-{
-    bool isNeckExtended;
 
     public void Eat()
     {
-        isNeckExtended = true;
         hunger = 0.0f;
+    }
+
+    public void Breathe()
+    {
+
+    }
+
+    public void Drink()
+    {
+
+    }
+
+    public void CreateChildren()
+    {
+
     }
 }
 
-public class Panda : Animal
+public class Cat : Animal
 {
-    float angularVelocity;
-    
-    public void Roll()
+    public void Meow()
     {
-        // 1 revolution per minute... pandas are chill :)
-        angularVelocity = 1.0f;
+        Debug.Log("Meowwwwwww");
+    }
+}
+
+public class Capybara : Animal
+{
+    public float zenFactor;
+
+    public void RideOtherAnimals()
+    {
+        // https://www.youtube.com/watch?v=TNd3DSamlcU
+        Debug.Log("CAPYBARA CAPYBARA CAPYBARA CAPYBARA");
+    }
+}
+
+public class Shark : Animal
+{
+    public Quaternion Rotate()
+    {
+        return Quaternion.Euler(0.0f, 0.0f, 90.0f);
+    }
+
+    public void Hunt()
+    {
+        Debug.Log("Dun dun.... Dun dun... Dun. Dun. Dun. Dun (Jaws)");
+    }
+}
+
+public class Axolotl : Animal
+{
+    public float reactionTime;
+    public float cutenessFactor;
+
+    public void Regenerate()
+    {
+        Debug.Log("Limbs regenerating... Come back soon!");
+    }
+
+    public void BeCute()
+    {
+        cutenessFactor = float.MaxValue;
     }
 }
