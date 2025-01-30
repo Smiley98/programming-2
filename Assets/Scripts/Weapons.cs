@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.EventSystems;
 using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public enum WeaponType
@@ -12,10 +11,12 @@ public enum WeaponType
 
 public abstract class Weapon
 {
+    // "How do we want *ALL* bullets to behave?" -- Each have a unique direction & speed
     public abstract void Shoot(Vector3 direction, float speed);
 
-    public GameObject shooter;
+    // "How do we want *ALL* weapons to behave?" -- Each weapon needs a prefab, and a shooter
     public GameObject weaponPrefab;
+    public GameObject shooter;
 }
 
 public class Rifle : Weapon
@@ -91,8 +92,8 @@ public class Weapons : MonoBehaviour
             switch (weaponType)
             {
                 case WeaponType.RIFLE:
-                    rifle.Shoot(mouseDirection, bulletSpeed);
                     //ShootRifle(mouseDirection);
+                    rifle.Shoot(mouseDirection, bulletSpeed);
                     break;
 
                 case WeaponType.SHOTGUN:
