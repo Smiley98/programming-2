@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
+using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public enum WeaponType
 {
@@ -9,7 +10,27 @@ public enum WeaponType
     COUNT
 }
 
-public class Player : MonoBehaviour
+public abstract class Weapon
+{
+    public abstract void Shoot(Vector3 direction, float speed);
+
+    public GameObject shooter;
+    public GameObject weaponPrefab;
+}
+
+public class Rifle : Weapon
+{
+    public override void Shoot(Vector3 direction, float speed)
+    {
+        GameObject bullet = GameObject.Instantiate(weaponPrefab);
+        bullet.transform.position = shooter.transform.position + direction * 0.75f;
+        bullet.GetComponent<Rigidbody2D>().linearVelocity = direction * speed;
+        bullet.GetComponent<SpriteRenderer>().color = Color.red;
+        GameObject.Destroy(bullet, 1.0f);
+    }
+}
+
+public class Weapons : MonoBehaviour
 {
     [SerializeField]
     GameObject bulletPrefab;
@@ -21,6 +42,13 @@ public class Player : MonoBehaviour
     float moveSpeed = 5.0f;
 
     WeaponType weaponType = WeaponType.RIFLE;
+    Weapon rifle = new Rifle();
+
+    void Start()
+    {
+        rifle.weaponPrefab = bulletPrefab;
+        rifle.shooter = gameObject;
+    }
 
     // Optional tasks (next week homework will be assigned based on this code):
     // 1. Fire weapons automatically based on a timer instead of on-key-press.
@@ -63,7 +91,8 @@ public class Player : MonoBehaviour
             switch (weaponType)
             {
                 case WeaponType.RIFLE:
-                    ShootRifle(mouseDirection);
+                    rifle.Shoot(mouseDirection, bulletSpeed);
+                    //ShootRifle(mouseDirection);
                     break;
 
                 case WeaponType.SHOTGUN:
@@ -90,7 +119,7 @@ public class Player : MonoBehaviour
     {
         GameObject bullet = Instantiate(bulletPrefab);
         bullet.transform.position = transform.position + direction * 0.75f;
-        bullet.GetComponent<Rigidbody2D>().velocity = direction * bulletSpeed;
+        bullet.GetComponent<Rigidbody2D>().linearVelocity = direction * bulletSpeed;
         bullet.GetComponent<SpriteRenderer>().color = Color.red;
         Destroy(bullet, 1.0f);
     }
@@ -108,9 +137,9 @@ public class Player : MonoBehaviour
         bulletLeft.transform.position = transform.position + directionLeft * 0.75f;
         bulletRight.transform.position = transform.position + directionRight * 0.75f;
 
-        bullet.GetComponent<Rigidbody2D>().velocity = direction * bulletSpeed;
-        bulletLeft.GetComponent<Rigidbody2D>().velocity = directionLeft * bulletSpeed;
-        bulletRight.GetComponent<Rigidbody2D>().velocity = directionRight * bulletSpeed;
+        bullet.GetComponent<Rigidbody2D>().linearVelocity = direction * bulletSpeed;
+        bulletLeft.GetComponent<Rigidbody2D>().linearVelocity = directionLeft * bulletSpeed;
+        bulletRight.GetComponent<Rigidbody2D>().linearVelocity = directionRight * bulletSpeed;
 
         bullet.GetComponent <SpriteRenderer>().color = Color.green;
         bulletLeft.GetComponent <SpriteRenderer>().color = Color.green;
@@ -125,7 +154,7 @@ public class Player : MonoBehaviour
     {
         GameObject grenade = Instantiate(grenadePrefab);
         grenade.transform.position = transform.position + direction * 0.75f;
-        grenade.GetComponent<Rigidbody2D>().velocity = direction * bulletSpeed;
+        grenade.GetComponent<Rigidbody2D>().linearVelocity = direction * bulletSpeed;
         Destroy(grenade, 1.0f);
     }
 }

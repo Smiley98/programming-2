@@ -12,7 +12,7 @@ public class AnimalHouse : MonoBehaviour
         cat.Meow();                 // <-- cat-specific behaviour
         cat.color = Color.magenta;  // <-- common animal attribute
         cat.Drink();                // <-- common animal behaviour
-
+        
         // Create lots of kittens
         for (int i = 0; i < 10; i++)
         {
