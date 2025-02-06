@@ -25,7 +25,7 @@ public class Rifle : Weapon
     {
         GameObject bullet = GameObject.Instantiate(weaponPrefab);
         bullet.transform.position = shooter.transform.position + direction * 0.75f;
-        bullet.GetComponent<Rigidbody2D>().linearVelocity = direction * speed;
+        bullet.GetComponent<Rigidbody2D>().velocity = direction * speed;
         bullet.GetComponent<SpriteRenderer>().color = Color.red;
         GameObject.Destroy(bullet, 1.0f);
     }
@@ -120,7 +120,7 @@ public class Weapons : MonoBehaviour
     {
         GameObject bullet = Instantiate(bulletPrefab);
         bullet.transform.position = transform.position + direction * 0.75f;
-        bullet.GetComponent<Rigidbody2D>().linearVelocity = direction * bulletSpeed;
+        bullet.GetComponent<Rigidbody2D>().velocity = direction * bulletSpeed;
         bullet.GetComponent<SpriteRenderer>().color = Color.red;
         Destroy(bullet, 1.0f);
     }
@@ -138,9 +138,9 @@ public class Weapons : MonoBehaviour
         bulletLeft.transform.position = transform.position + directionLeft * 0.75f;
         bulletRight.transform.position = transform.position + directionRight * 0.75f;
 
-        bullet.GetComponent<Rigidbody2D>().linearVelocity = direction * bulletSpeed;
-        bulletLeft.GetComponent<Rigidbody2D>().linearVelocity = directionLeft * bulletSpeed;
-        bulletRight.GetComponent<Rigidbody2D>().linearVelocity = directionRight * bulletSpeed;
+        bullet.GetComponent<Rigidbody2D>().velocity = direction * bulletSpeed;
+        bulletLeft.GetComponent<Rigidbody2D>().velocity = directionLeft * bulletSpeed;
+        bulletRight.GetComponent<Rigidbody2D>().velocity = directionRight * bulletSpeed;
 
         bullet.GetComponent <SpriteRenderer>().color = Color.green;
         bulletLeft.GetComponent <SpriteRenderer>().color = Color.green;
@@ -155,7 +155,7 @@ public class Weapons : MonoBehaviour
     {
         GameObject grenade = Instantiate(grenadePrefab);
         grenade.transform.position = transform.position + direction * 0.75f;
-        grenade.GetComponent<Rigidbody2D>().linearVelocity = direction * bulletSpeed;
+        grenade.GetComponent<Rigidbody2D>().velocity = direction * bulletSpeed;
         Destroy(grenade, 1.0f);
     }
 }
