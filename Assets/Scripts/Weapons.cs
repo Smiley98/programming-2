@@ -1,5 +1,4 @@
 using UnityEngine;
-using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public enum WeaponType
 {
@@ -17,6 +16,15 @@ public abstract class Weapon
     // "How do we want *ALL* weapons to behave?" -- Each weapon needs a prefab, and a shooter
     public GameObject weaponPrefab;
     public GameObject shooter;
+
+    public int amoCount;    // How much amo is currently in our clip
+    public int amoMax;      // How much amo does our clip hold
+
+    public float reloadCurrent; // How far into our reload cooldown
+    public float reloadTotal;   // How long it takes to reload
+
+    public float shootCurrent;  // How far into our shoot cooldown
+    public float shootTotal;    // How long it take to shoot
 }
 
 public class Rifle : Weapon
@@ -44,11 +52,19 @@ public class Weapons : MonoBehaviour
 
     WeaponType weaponType = WeaponType.RIFLE;
     Weapon rifle = new Rifle();
+    Weapon weapon = null;
 
     void Start()
     {
         rifle.weaponPrefab = bulletPrefab;
         rifle.shooter = gameObject;
+
+        rifle.shootCurrent = 0.0f;
+        rifle.shootTotal = 0.25f;
+
+        // TODO: Add shotgun & grenade information d(on't forget about reload & clip-size)!
+
+        weapon = rifle;
     }
 
     // Optional tasks (next week homework will be assigned based on this code):
@@ -57,6 +73,8 @@ public class Weapons : MonoBehaviour
     // 3. Give each projectile a damage value, spawn targets with health values, apply damage to targets on-collision.
     void Update()
     {
+        float dt = Time.deltaTime;
+
         // Directional movement
         Vector3 direction = Vector3.zero;
         if (Input.GetKey(KeyCode.W))
@@ -76,7 +94,7 @@ public class Weapons : MonoBehaviour
             direction += Vector3.right;
         }
         direction = direction.normalized;
-        Vector3 movement = direction * moveSpeed * Time.deltaTime;
+        Vector3 movement = direction * moveSpeed * dt;
         transform.position += movement;
 
         // Aiming with mouse cursor
@@ -87,24 +105,38 @@ public class Weapons : MonoBehaviour
         Debug.DrawLine(transform.position, transform.position + mouseDirection * 5.0f);
 
         // Shoot weapon with space
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKey(KeyCode.Space))
         {
-            switch (weaponType)
+            weapon.shootCurrent += dt;
+            if (weapon.shootCurrent >= weapon.shootTotal)
             {
-                case WeaponType.RIFLE:
-                    //ShootRifle(mouseDirection);
-                    rifle.Shoot(mouseDirection, bulletSpeed);
-                    break;
+                weapon.shootCurrent = 0.0f;
+                weapon.Shoot(mouseDirection, bulletSpeed);
 
-                case WeaponType.SHOTGUN:
-                    ShootShotgun(mouseDirection);
-                    break;
-
-                case WeaponType.GRENADE:
-                    ShootGrenade(mouseDirection);
-                    break;
+                // TODO: Subtract from clip size after shooting
+                // TODO: Add reload timer
             }
         }
+
+        // No longer shooting weapons on-key-press. Holding space and shooting via timer instead!
+        //if (Input.GetKeyDown(KeyCode.Space))
+        //{
+        //    switch (weaponType)
+        //    {
+        //        case WeaponType.RIFLE:
+        //            //ShootRifle(mouseDirection);
+        //            rifle.Shoot(mouseDirection, bulletSpeed);
+        //            break;
+        //
+        //        case WeaponType.SHOTGUN:
+        //            ShootShotgun(mouseDirection);
+        //            break;
+        //
+        //        case WeaponType.GRENADE:
+        //            ShootGrenade(mouseDirection);
+        //            break;
+        //    }
+        //}
 
         // Cycle weapon with left-shift
         if (Input.GetKeyDown(KeyCode.LeftShift))
@@ -113,9 +145,25 @@ public class Weapons : MonoBehaviour
             weaponNumber %= (int)WeaponType.COUNT;
             weaponType = (WeaponType)weaponNumber;
             Debug.Log("Selected weapon: " + weaponType);
+            switch (weaponType)
+            {
+                case WeaponType.RIFLE:
+                    weapon = rifle;
+                    break;
+                
+                case WeaponType.SHOTGUN:
+                    // TODO: add shotgun
+                    break;
+                
+                case WeaponType.GRENADE:
+                    // TODO: add grenade
+                    break;
+            }
         }
     }
 
+    // Now using polymorphic Shoot methods to fire our weapons
+    /*
     void ShootRifle(Vector3 direction)
     {
         GameObject bullet = Instantiate(bulletPrefab);
@@ -158,4 +206,5 @@ public class Weapons : MonoBehaviour
         grenade.GetComponent<Rigidbody2D>().velocity = direction * bulletSpeed;
         Destroy(grenade, 1.0f);
     }
+    */
 }
