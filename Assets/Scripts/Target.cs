@@ -1,8 +1,13 @@
 using UnityEngine;
 
-public class Target : MonoBehaviour
+public class Target : MonoBehaviour, IDamageable
 {
     float health = 100.0f;
+
+    public void TakeDamage(float damage)
+    {
+        health -= damage;
+    }
 
     void OnTriggerEnter2D(Collider2D collision)
     {
@@ -10,7 +15,7 @@ public class Target : MonoBehaviour
         // So we're guaranteed to be able to fetch their Projectile component.
         // Realistically, you'd need a null or tag check to ensure the data exists.
         Projectile projectile = collision.GetComponent<Projectile>();
-        health -= projectile.damage;
+        TakeDamage(projectile.damage);
         if (health <= 0.0)
             Destroy(gameObject);
 
