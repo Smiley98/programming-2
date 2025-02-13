@@ -1,20 +1,9 @@
 using UnityEngine;
 
-public class Target : MonoBehaviour, IDamageable
+public class Target : TargetBase
 {
-    float health = 100.0f;
-
-    public void TakeDamage(float damage)
+    public override void TakeDamage(float damage)
     {
         health -= damage;
-    }
-
-    void OnTriggerEnter2D(Collider2D collision)
-    {
-        Projectile projectile = collision.GetComponent<Projectile>();
-        TakeDamage(projectile.damage);
-        if (health <= 0.0f)
-            Destroy(gameObject);            // Destroy the target
-        Destroy(collision.gameObject);      // Destroy the bullet
     }
 }
