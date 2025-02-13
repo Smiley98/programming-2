@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 5117287588811586323}
   - component: {fileID: 4429053432778130294}
   - component: {fileID: 7104922792909932353}
-  - component: {fileID: 5160772956275971612}
   m_Layer: 0
   m_Name: Grenade
   m_TagString: Untagged
@@ -167,16 +166,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shrapnelPrefab: {fileID: 4779383841538616724, guid: 004b644b06541d34dbeaa6b64ac32a93, type: 3}
---- !u!114 &5160772956275971612
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2010755362159126542}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5e400e4cc077c6a4a8289d8e2744cb2c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  damage: 0

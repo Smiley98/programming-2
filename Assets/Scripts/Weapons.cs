@@ -17,8 +17,8 @@ public abstract class Weapon
     public GameObject weaponPrefab;
     public GameObject shooter;
 
-    public int amoCount;    // How much amo is currently in our clip
-    public int amoMax;      // How much amo does our clip hold
+    public int ammoCount;    // How much amo is currently in our clip
+    public int ammoMax;      // How much amo does our clip hold
 
     public float reloadCurrent; // How far into our reload cooldown
     public float reloadTotal;   // How long it takes to reload
@@ -35,7 +35,6 @@ public class Rifle : Weapon
         bullet.transform.position = shooter.transform.position + direction * 0.75f;
         bullet.GetComponent<Rigidbody2D>().linearVelocity = direction * speed;
         bullet.GetComponent<SpriteRenderer>().color = Color.red;
-        bullet.GetComponent<Projectile>().damage = 25.0f;
         GameObject.Destroy(bullet, 1.0f);
     }
 }
@@ -109,7 +108,7 @@ public class Weapons : MonoBehaviour
         if (Input.GetKey(KeyCode.Space))
         {
             weapon.shootCurrent += dt;
-            if (weapon.shootCurrent >= weapon.shootTotal)
+            if (weapon.shootCurrent >= weapon.shootTotal/*Add a check to make sure there are bullets in your clip*/)
             {
                 weapon.shootCurrent = 0.0f;
                 weapon.Shoot(mouseDirection, bulletSpeed);
@@ -118,6 +117,11 @@ public class Weapons : MonoBehaviour
                 // TODO: Add reload timer
             }
         }
+        // if there are no bullets in your clip, perform a reload:
+        // -tick the reload timer by delta-time
+        // -if the reload timer is expired:
+        //      -reset the reload timer
+        //      -restore clip ammo to max ammo
 
         // No longer shooting weapons on-key-press. Holding space and shooting via timer instead!
         //if (Input.GetKeyDown(KeyCode.Space))

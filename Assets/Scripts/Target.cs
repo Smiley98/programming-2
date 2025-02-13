@@ -1,9 +1,9 @@
 using UnityEngine;
 
-public class Target : TargetBase
+public class Target : MonoBehaviour
 {
-    public override void TakeDamage(float damage)
+    void OnTriggerEnter2D(Collider2D collision)
     {
-        health -= damage;
+        Destroy(gameObject);
     }
 }
