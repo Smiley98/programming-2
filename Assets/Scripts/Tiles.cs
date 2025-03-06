@@ -14,11 +14,11 @@ public class Tiles : MonoBehaviour
         { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
         { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
         { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-        { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-        { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-        { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-        { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-        { 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+        { 1, 0, 0, 0, 2, 3, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+        { 1, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 1 },
+        { 1, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 1 },
+        { 1, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 1 },
+        { 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 1 },
         { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
         { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }
     };
@@ -44,6 +44,14 @@ public class Tiles : MonoBehaviour
 
     void Update()
     {
+        // Uncomment this code to render the map
+        //for (int y = 0; y < rows; y++)
+        //{
+        //    for (int x = 0; x < cols; x++)
+        //    {
+        //        ColorTile(y, x);
+        //    }
+        //}
         Gradient();
 
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -54,12 +62,25 @@ public class Tiles : MonoBehaviour
         col = Mathf.Clamp(col, 0, cols - 1);
 
         ColorTile(row, col);
+
+        // Homework 4:
+        // Look up tiles 1 left, 1 right, 1 up, and 1 down of the mouse tile.
+        // Color them accordingly via the ColorTile() function.
+        // Ensure left/right/up/down tiles do not produce out-of-range exceptions.
+        // (1% lost for each direction that produces an exception).
     }
 
     void ColorTile(int row, int col)
     {
+        Color[] colors = new Color[5];
+        colors[0] = Color.white;
+        colors[1] = Color.grey;
+        colors[2] = Color.red;
+        colors[3] = Color.green;
+        colors[4] = Color.blue;
+
         int value = values[row, col];
-        Color color = value == 0 ? Color.white : Color.grey;
+        Color color = colors[value];
         GameObject tile = tiles[row, col];
         tile.GetComponent<SpriteRenderer>().color = color;
     }
