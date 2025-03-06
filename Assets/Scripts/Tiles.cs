@@ -9,9 +9,23 @@ public class Tiles : MonoBehaviour
     GameObject tilePrefab;
     GameObject[,] tiles = new GameObject[rows, cols];
 
+    int[,] values =
+    {
+        { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
+        { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+        { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+        { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+        { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+        { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+        { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+        { 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+        { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+        { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }
+    };
+
     void Start()
     {
-        float y = 0.5f;
+        float y = 9.5f;
         for (int row = 0; row < rows; row++)
         {
             float x = 0.5f;
@@ -24,15 +38,17 @@ public class Tiles : MonoBehaviour
                 // Store our tile for later use!
                 tiles[row, col] = tile;
             }
-            y += 1.0f;
+            y -= 1.0f;
         }
     }
 
     void Update()
     {
-        Gradient();
+        //Gradient();
+        ColorTiles();
 
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        mousePosition.y = 10.0f - mousePosition.y;
         int row = (int)mousePosition.y;
         int col = (int)mousePosition.x;
         row = Mathf.Clamp(row, 0, rows - 1);
@@ -40,6 +56,20 @@ public class Tiles : MonoBehaviour
 
         GameObject tile = tiles[row, col];
         tile.GetComponent<SpriteRenderer>().color = Color.cyan;
+    }
+
+    void ColorTiles()
+    {
+        for (int row = 0; row < rows; row++)
+        {
+            for (int col = 0; col < cols; col++)
+            {
+                int value = values[row, col];
+                Color color = value == 0 ? Color.white : Color.grey;
+                GameObject tile = tiles[row, col];
+                tile.GetComponent<SpriteRenderer>().color = color;
+            }
+        }
     }
 
     void Gradient()
@@ -58,3 +88,13 @@ public class Tiles : MonoBehaviour
         }
     }
 }
+
+// ? explanation within ColorTiles() function:
+// ? is called the Ternary Operator. Its effectively a short-hand if-statement.
+// It does the same as the following:
+//Color color = new Color();
+//if (value == 0)
+//    color = Color.white;
+//else
+//    color = Color.grey;
+//
