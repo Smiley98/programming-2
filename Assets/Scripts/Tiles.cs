@@ -14,6 +14,9 @@ public class Tiles : MonoBehaviour
         {
             GameObject tile = Instantiate(tilePrefab);
             tile.transform.position = new Vector3(x, 0.5f);
+            float u = tile.transform.position.x / (float)cols;
+            Color color = new Color(u, 0.0f, 0.0f);
+            tile.GetComponent<SpriteRenderer>().color = color;
             x += 1.0f;
         }
     }
