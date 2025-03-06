@@ -20,19 +20,26 @@ public class Tiles : MonoBehaviour
                 GameObject tile = Instantiate(tilePrefab);
                 tile.transform.position = new Vector3(x, y);
                 x += 1.0f;
-
+        
                 // Store our tile for later use!
                 tiles[row, col] = tile;
             }
             y += 1.0f;
         }
-
-        Gradient();
     }
 
     void Update()
     {
-        
+        Gradient();
+
+        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        int row = (int)mousePosition.y;
+        int col = (int)mousePosition.x;
+        row = Mathf.Clamp(row, 0, rows - 1);
+        col = Mathf.Clamp(col, 0, cols - 1);
+
+        GameObject tile = tiles[row, col];
+        tile.GetComponent<SpriteRenderer>().color = Color.cyan;
     }
 
     void Gradient()
