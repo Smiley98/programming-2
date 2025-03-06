@@ -13,12 +13,12 @@ public class Tiles : MonoBehaviour
     {
         { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
         { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-        { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-        { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-        { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-        { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-        { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-        { 1, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+        { 1, 0, 0, 0, 0, 2, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+        { 1, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 1 },
+        { 1, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 1 },
+        { 1, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 1 },
+        { 1, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 1 },
+        { 1, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 1 },
         { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
         { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }
     };
@@ -48,6 +48,7 @@ public class Tiles : MonoBehaviour
     {
         // Must re-apply the gradient each frame only our current mouse tile is magenta
         Gradient();
+        //ColorGrid();
 
         // Convert to grid-space (invert y because world-y = 0 is bottom but grid-y = 0 is top)
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -59,7 +60,28 @@ public class Tiles : MonoBehaviour
 
         // Look up corresponding game object and apply colour to it!
         GameObject tile = tiles[row, col];
-        tile.GetComponent<SpriteRenderer>().color = Color.magenta;
+        ColorTile(row, col);
+
+        // Homework 4:
+        // Look up tiles left, right, up, and down of the mouse tile
+        // Color them accordingly via the ColorTile() function.
+        // Ensure left/right/up/down tiles do not produce out-of-range exceptions.
+        // (1% lost for each direction that produces an exception).
+    }
+
+    void ColorTile(int row, int col)
+    {
+        Color[] colors = new Color[5];
+        colors[0] = Color.white;
+        colors[1] = Color.grey;
+        colors[2] = Color.red;
+        colors[3] = Color.green;
+        colors[4] = Color.blue;
+
+        GameObject tile = tiles[row, col];
+        int value = values[row, col];
+        Color color =  colors[value];
+        tile.GetComponent<SpriteRenderer>().color = color;
     }
 
     void ColorGrid()
@@ -68,10 +90,7 @@ public class Tiles : MonoBehaviour
         {
             for (int col = 0; col < cols; col++)
             {
-                GameObject tile = tiles[row, col];
-                int value = values[row, col];
-                Color color = value == 0 ? Color.white : Color.gray;
-                tile.GetComponent<SpriteRenderer>().color = color;
+                ColorTile(row, col);
             }
         }
     }
