@@ -7,6 +7,7 @@ public class Tiles : MonoBehaviour
 
     [SerializeField]
     GameObject tilePrefab;
+    GameObject[,] tiles = new GameObject[rows, cols];
 
     void Start()
     {
@@ -18,18 +19,35 @@ public class Tiles : MonoBehaviour
             {
                 GameObject tile = Instantiate(tilePrefab);
                 tile.transform.position = new Vector3(x, y);
-                float u = tile.transform.position.x / (float)cols;
-                float v = tile.transform.position.y / (float)rows;
-                Color color = new Color(u, v, 0.0f);
-                tile.GetComponent<SpriteRenderer>().color = color;
+                tiles[row, col] = tile;
                 x += 1.0f;
             }
             y += 1.0f;
         }
+
+        Gradient();
     }
 
     void Update()
     {
         
+    }
+
+    void Gradient()
+    {
+        for (int row = 0; row < rows; row++)
+        {
+            for (int col = 0; col < cols; col++)
+            {
+                // Calculate our gradient colour by forming a uv via grid coordinates
+                float u = col / (float)cols;
+                float v = row / (float)rows;
+                Color color = new Color(u, v, 0.0f);
+
+                // Fetch our tile and change its colour to the gradient colour!
+                GameObject tile = tiles[row, col];
+                tile.GetComponent<SpriteRenderer>().color = color;
+            }
+        }
     }
 }
