@@ -41,12 +41,25 @@ public class Tiles : MonoBehaviour
         }
 
         //Gradient();
-        ColorGrid();
+        //ColorGrid();
     }
 
     void Update()
     {
-        
+        // Must re-apply the gradient each frame only our current mouse tile is magenta
+        Gradient();
+
+        // Convert to grid-space (invert y because world-y = 0 is bottom but grid-y = 0 is top)
+        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        mousePosition.y = 10.0f - mousePosition.y;
+        int row = (int)mousePosition.y;
+        int col = (int)mousePosition.x;
+        row = Mathf.Clamp(row, 0, rows - 1);
+        col = Mathf.Clamp(col, 0, cols - 1);
+
+        // Look up corresponding game object and apply colour to it!
+        GameObject tile = tiles[row, col];
+        tile.GetComponent<SpriteRenderer>().color = Color.magenta;
     }
 
     void ColorGrid()
