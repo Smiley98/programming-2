@@ -44,8 +44,7 @@ public class Tiles : MonoBehaviour
 
     void Update()
     {
-        //Gradient();
-        ColorTiles();
+        Gradient();
 
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mousePosition.y = 10.0f - mousePosition.y;
@@ -54,22 +53,15 @@ public class Tiles : MonoBehaviour
         row = Mathf.Clamp(row, 0, rows - 1);
         col = Mathf.Clamp(col, 0, cols - 1);
 
-        GameObject tile = tiles[row, col];
-        tile.GetComponent<SpriteRenderer>().color = Color.cyan;
+        ColorTile(row, col);
     }
 
-    void ColorTiles()
+    void ColorTile(int row, int col)
     {
-        for (int row = 0; row < rows; row++)
-        {
-            for (int col = 0; col < cols; col++)
-            {
-                int value = values[row, col];
-                Color color = value == 0 ? Color.white : Color.grey;
-                GameObject tile = tiles[row, col];
-                tile.GetComponent<SpriteRenderer>().color = color;
-            }
-        }
+        int value = values[row, col];
+        Color color = value == 0 ? Color.white : Color.grey;
+        GameObject tile = tiles[row, col];
+        tile.GetComponent<SpriteRenderer>().color = color;
     }
 
     void Gradient()
