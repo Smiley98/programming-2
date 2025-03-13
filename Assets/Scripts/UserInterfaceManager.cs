@@ -24,7 +24,7 @@ public class UserInterfaceManager : MonoBehaviour
 
     void OnButtonClick()
     {
-        text.gameObject.SetActive(!text.gameObject.activeSelf);
+        text.gameObject.SetActive(!text.IsActive());
         ToggleButtonText();
     }
 
@@ -39,7 +39,21 @@ public class UserInterfaceManager : MonoBehaviour
 
     void ToggleButtonText()
     {
-        string buttonText = text.gameObject.activeSelf ? "Hide Name" : "Show Name";
+        string buttonText = text.IsActive() ? "Hide Name" : "Show Name";
         button.GetComponentInChildren<TMP_Text>().text = buttonText;
     }
 }
+
+// Someone get back to me telling me if there's a way to use custom UI datatypes in the inspector!
+//public class CustomText : TMP_Text
+//{
+//    protected override void OnEnable()
+//    {
+//        Debug.Log("Text enabled");
+//    }
+//
+//    protected override void OnDisable()
+//    {
+//        Debug.Log("Text disabled");
+//    }
+//}
