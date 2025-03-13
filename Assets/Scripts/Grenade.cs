@@ -15,7 +15,7 @@ public class Grenade : MonoBehaviour
 
             GameObject shrapnel = Instantiate(shrapnelPrefab);
             shrapnel.transform.position = transform.position + direction * 0.75f;
-            shrapnel.GetComponent<Rigidbody2D>().velocity = direction * 5.0f;
+            shrapnel.GetComponent<Rigidbody2D>().linearVelocity = direction * 5.0f;
             shrapnel.GetComponent<SpriteRenderer>().color = Color.magenta;
             Destroy(shrapnel, 0.5f);
         }
