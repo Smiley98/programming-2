@@ -25,16 +25,21 @@ public class UserInterfaceManager : MonoBehaviour
     void OnButtonClick()
     {
         text.gameObject.SetActive(!text.gameObject.activeSelf);
-        string buttonText = text.gameObject.activeSelf ? "Hide Name" : "Show Name";
-        button.GetComponentInChildren<TMP_Text>().text = buttonText;
+        ToggleButtonText();
     }
 
     void OnTextSubmit(string input)
     {
         text.text = input;
-        button.GetComponentInChildren<TMP_Text>().text = "Hide Name";
         inputField.gameObject.SetActive(false);
         text.gameObject.SetActive(true);
         button.gameObject.SetActive(true);
+        ToggleButtonText();
+    }
+
+    void ToggleButtonText()
+    {
+        string buttonText = text.gameObject.activeSelf ? "Hide Name" : "Show Name";
+        button.GetComponentInChildren<TMP_Text>().text = buttonText;
     }
 }
