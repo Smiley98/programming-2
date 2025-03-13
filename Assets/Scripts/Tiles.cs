@@ -102,12 +102,20 @@ public class Tiles : MonoBehaviour
     }
 }
 
-// ? explanation within ColorTiles() function:
 // ? is called the Ternary Operator. Its effectively a short-hand if-statement.
-// It does the same as the following:
-//Color color = new Color();
-//if (value == 0)
+// The following snippets of code are the same:
+//
+// 1)
+// bool colorWhite = true;
+// Color color = colorWhite ? Color.white : Color.grey;
+//
+// vs
+//
+// 2)
+// bool colorWhite = true;
+// Color color = new Color();
+// if (colorWhite)
 //    color = Color.white;
-//else
+// else
 //    color = Color.grey;
 //
