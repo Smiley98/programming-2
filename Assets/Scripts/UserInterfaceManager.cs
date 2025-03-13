@@ -1,8 +1,12 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class UserInterfaceManager : MonoBehaviour
 {
+    [SerializeField]
+    TMP_Text text;
+
     [SerializeField]
     Button button;
 
@@ -13,6 +17,6 @@ public class UserInterfaceManager : MonoBehaviour
 
     void OnButtonClick()
     {
-        Debug.Log("Button clicked!");
+        text.gameObject.SetActive(!text.gameObject.activeSelf);
     }
 }
