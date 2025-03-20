@@ -62,6 +62,12 @@ public static class GridManager
         }
     }
 
+    public static void ColorTile(int row, int col, GameObject[,] tiles, Color color)
+    {
+        GameObject tile = tiles[row, col];
+        tile.GetComponent<SpriteRenderer>().color = color;
+    }
+
     public static void ColorTile(int row, int col, GameObject[,] tiles, int[,] values)
     {
         Color[] colors = new Color[5];
@@ -73,7 +79,6 @@ public static class GridManager
 
         int value = values[row, col];
         Color color = colors[value];
-        GameObject tile = tiles[row, col];
-        tile.GetComponent<SpriteRenderer>().color = color;
+        ColorTile(row, col, tiles, color);
     }
 }

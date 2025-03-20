@@ -23,6 +23,9 @@ public class Tiles : MonoBehaviour
         { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }
     };
 
+    int py = rows / 2;
+    int px = cols / 2;
+
     void Start()
     {
         tiles = GridManager.Create(rows, cols, tilePrefab);
@@ -36,6 +39,8 @@ public class Tiles : MonoBehaviour
         Cell mouseCell = GridManager.WorldToGrid(mousePosition, rows, cols, tilePrefab);
 
         GridManager.ColorTile(mouseCell.row, mouseCell.col, tiles, values);
+
+        GridManager.ColorTile(py, px, tiles, Color.magenta);
     }
 }
 
