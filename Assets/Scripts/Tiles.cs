@@ -59,15 +59,25 @@ public class Tiles : MonoBehaviour
         {
             dx++;
         }
+
+        // Since dy and dx are zero by default, no change will occur unless a key is pressed!
         player = Move(player, dy, dx);
 
         // We've moved if there's change in y or change in x!
         if (dy != 0 || dx != 0)
         {
-            
-            Debug.Log("Moved " + dy + " vertically and " + dx + " horizontally");
+            history.Add( new Cell { row = dy, col = dx });
         }
 
+        // Apply undo by moving opposite to last direction if space is pressed!
+        if (Input.GetKeyDown(KeyCode.Space) && history.Count > 0)
+        {
+            Cell last = history[history.Count - 1];
+            history.RemoveAt(history.Count - 1);
+            player = Move(player, -last.row, -last.col);
+        }
+
+        // Draw player
         GridManager.ColorTile(player.row, player.col, tiles, Color.magenta);
     }
 
