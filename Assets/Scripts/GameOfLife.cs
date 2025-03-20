@@ -10,7 +10,7 @@ public class GameOfLife : MonoBehaviour
     GameObject[,] tiles = new GameObject[rows, cols];
 
     // Only change the initial values once you're certain your simulation works.
-    // If done correctly, this should initiate an animation that moves down and left!
+    // If done correctly, this should initiate an animation that moves down and right!
     // It should match this: https://playgameoflife.com/
     int[,] prev =
     {
