@@ -25,6 +25,7 @@ public class Tiles : MonoBehaviour
     };
 
     Cell player = new Cell { row = rows / 2, col = cols / 2 };
+    List<Cell> history = new List<Cell>();
 
     void Start()
     {
@@ -58,18 +59,25 @@ public class Tiles : MonoBehaviour
         {
             dx++;
         }
-        player.row += dy;
-        player.col += dx;
-        player.row = Mathf.Clamp(player.row, 0, rows - 1);
-        player.col = Mathf.Clamp(player.col, 0, cols - 1);
+        player = Move(player, dy, dx);
 
         // We've moved if there's change in y or change in x!
         if (dy != 0 || dx != 0)
         {
+            
             Debug.Log("Moved " + dy + " vertically and " + dx + " horizontally");
         }
 
         GridManager.ColorTile(player.row, player.col, tiles, Color.magenta);
+    }
+
+    Cell Move(Cell position, int dy, int dx)
+    {
+        position.row += dy;
+        position.col += dx;
+        position.row = Mathf.Clamp(position.row, 0, rows - 1);
+        position.col = Mathf.Clamp(position.col, 0, cols - 1);
+        return position;
     }
 }
 
