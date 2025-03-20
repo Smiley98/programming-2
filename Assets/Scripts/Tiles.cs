@@ -40,6 +40,25 @@ public class Tiles : MonoBehaviour
 
         GridManager.ColorTile(mouseCell.row, mouseCell.col, tiles, values);
 
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            py--;
+        }
+        else if (Input.GetKeyDown(KeyCode.S))
+        {
+            py++;
+        }
+        else if (Input.GetKeyDown(KeyCode.A))
+        {
+            px--;
+        }
+        else if (Input.GetKeyDown(KeyCode.D))
+        {
+            px++;
+        }
+        py = Mathf.Clamp(py, 0, rows - 1);
+        px = Mathf.Clamp(px, 0, cols - 1);
+
         GridManager.ColorTile(py, px, tiles, Color.magenta);
     }
 }
