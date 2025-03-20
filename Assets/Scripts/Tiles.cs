@@ -24,8 +24,7 @@ public class Tiles : MonoBehaviour
         { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }
     };
 
-    int py = rows / 2;
-    int px = cols / 2;
+    Cell player = new Cell { row = rows / 2, col = cols / 2 };
 
     void Start()
     {
@@ -59,10 +58,10 @@ public class Tiles : MonoBehaviour
         {
             dx++;
         }
-        py += dy;
-        px += dx;
-        py = Mathf.Clamp(py, 0, rows - 1);
-        px = Mathf.Clamp(px, 0, cols - 1);
+        player.row += dy;
+        player.col += dx;
+        player.row = Mathf.Clamp(player.row, 0, rows - 1);
+        player.col = Mathf.Clamp(player.col, 0, cols - 1);
 
         // We've moved if there's change in y or change in x!
         if (dy != 0 || dx != 0)
@@ -70,7 +69,7 @@ public class Tiles : MonoBehaviour
             Debug.Log("Moved " + dy + " vertically and " + dx + " horizontally");
         }
 
-        GridManager.ColorTile(py, px, tiles, Color.magenta);
+        GridManager.ColorTile(player.row, player.col, tiles, Color.magenta);
     }
 }
 
