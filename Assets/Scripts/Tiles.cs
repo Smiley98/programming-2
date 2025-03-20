@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Tiles : MonoBehaviour
@@ -40,24 +41,34 @@ public class Tiles : MonoBehaviour
 
         GridManager.ColorTile(mouseCell.row, mouseCell.col, tiles, values);
 
+        int dy = 0;
+        int dx = 0;
         if (Input.GetKeyDown(KeyCode.W))
         {
-            py--;
+            dy--;
         }
         else if (Input.GetKeyDown(KeyCode.S))
         {
-            py++;
+            dy++;
         }
         else if (Input.GetKeyDown(KeyCode.A))
         {
-            px--;
+            dx--;
         }
         else if (Input.GetKeyDown(KeyCode.D))
         {
-            px++;
+            dx++;
         }
+        py += dy;
+        px += dx;
         py = Mathf.Clamp(py, 0, rows - 1);
         px = Mathf.Clamp(px, 0, cols - 1);
+
+        // We've moved if there's change in y or change in x!
+        if (dy != 0 || dx != 0)
+        {
+            Debug.Log("Moved " + dy + " vertically and " + dx + " horizontally");
+        }
 
         GridManager.ColorTile(py, px, tiles, Color.magenta);
     }
