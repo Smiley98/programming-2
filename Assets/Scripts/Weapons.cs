@@ -33,7 +33,7 @@ public class Rifle : Weapon
     {
         GameObject bullet = GameObject.Instantiate(weaponPrefab);
         bullet.transform.position = shooter.transform.position + direction * 0.75f;
-        bullet.GetComponent<Rigidbody2D>().linearVelocity = direction * speed;
+        bullet.GetComponent<Rigidbody2D>().velocity = direction * speed;
         bullet.GetComponent<SpriteRenderer>().color = Color.red;
         bullet.GetComponent<Projectile>().damage = 25.0f;
         GameObject.Destroy(bullet, 1.0f);
