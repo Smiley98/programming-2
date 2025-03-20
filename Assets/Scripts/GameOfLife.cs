@@ -63,8 +63,8 @@ public class GameOfLife : MonoBehaviour
         {
             for (int j = 0; j < cols; j++)
             {
-                // Render current frame
-                GridManager.ColorTile(i, j, tiles, curr);
+                Color color = curr[i, j] == 1 ? Color.grey : Color.white;
+                GridManager.ColorTile(i, j, tiles, color);
 
                 // Copy current to previous to set up next frame
                 prev[i, j] = curr[i, j];

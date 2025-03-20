@@ -24,8 +24,6 @@ public static class GridManager
                 GameObject tile = GameObject.Instantiate(tilePrefab);
                 tile.transform.position = new Vector3(x, y);
                 x += w;
-
-                // Store our tile for later use!
                 tiles[row, col] = tile;
             }
             y -= h;
@@ -39,8 +37,8 @@ public static class GridManager
         float w = tilePrefab.transform.localScale.x;
         float h = tilePrefab.transform.localScale.y;
         position.y = rows * h - position.y;
-        int row = (int)(position.y / h);//(int)mousePosition.y;
-        int col = (int)(position.x / w);//(int)mousePosition.x;
+        int row = (int)(position.y / h);
+        int col = (int)(position.x / w);
         row = Mathf.Clamp(row, 0, rows - 1);
         col = Mathf.Clamp(col, 0, cols - 1);
         return new Cell { row = row, col = col };
@@ -55,9 +53,7 @@ public static class GridManager
                 float u = col / (float)(cols - 1);
                 float v = row / (float)(rows - 1);
                 Color color = new Color(u, v, 0.0f);
-
-                GameObject tile = tiles[row, col];
-                tile.GetComponent<SpriteRenderer>().color = color;
+                ColorTile(row, col, tiles, color);
             }
         }
     }
@@ -66,19 +62,5 @@ public static class GridManager
     {
         GameObject tile = tiles[row, col];
         tile.GetComponent<SpriteRenderer>().color = color;
-    }
-
-    public static void ColorTile(int row, int col, GameObject[,] tiles, int[,] values)
-    {
-        Color[] colors = new Color[5];
-        colors[0] = Color.white;
-        colors[1] = Color.grey;
-        colors[2] = Color.red;
-        colors[3] = Color.green;
-        colors[4] = Color.blue;
-
-        int value = values[row, col];
-        Color color = colors[value];
-        ColorTile(row, col, tiles, color);
     }
 }
