@@ -220,6 +220,7 @@ GameObject:
   m_Component:
   - component: {fileID: 660659945}
   - component: {fileID: 660659946}
+  - component: {fileID: 660659947}
   m_Layer: 0
   m_Name: Tiles
   m_TagString: Untagged
@@ -249,9 +250,22 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 660659943}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: da4e4f53674541e4fbb0d3f85920115a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tilePrefab: {fileID: 8519738122496888389, guid: 42d625f70010cc747a063bf3d242e96b, type: 3}
+--- !u!114 &660659947
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 660659943}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f5ff572100ad314bae69de77e786c2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   tilePrefab: {fileID: 8519738122496888389, guid: 42d625f70010cc747a063bf3d242e96b, type: 3}
