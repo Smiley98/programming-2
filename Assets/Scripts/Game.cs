@@ -8,25 +8,36 @@ public class Game : MonoBehaviour
     [SerializeField]
     GameObject enemy;
 
+    Rigidbody2D rb;
+
     float speed = 5.0f;
     int curr = 0;
     int next = 1;
 
     void Start()
     {
-        UpdateEnemyVelocity();
+        rb = enemy.GetComponent<Rigidbody2D>();
+        //UpdateEnemyVelocity();
     }
 
     void Update()
     {
-        if (Vector3.Distance(enemy.transform.position, waypoints[next].transform.position) <= 0.5f)
-        {
-            curr++;
-            next++;
-            curr %= waypoints.Length;
-            next %= waypoints.Length;
-            UpdateEnemyVelocity();
-        }
+        //if (Vector3.Distance(enemy.transform.position, waypoints[next].transform.position) <= 0.5f)
+        //{
+        //    curr++;
+        //    next++;
+        //    curr %= waypoints.Length;
+        //    next %= waypoints.Length;
+        //    UpdateEnemyVelocity();
+        //}
+
+        // Move our enemy along a curve
+        Vector2 mouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector3 seekForce = Steering.Seek(enemy, mouse, 10.0f);
+        rb.AddForce(seekForce);
+
+        // Orient our enemy in its direction of motion!
+        enemy.transform.up = rb.linearVelocity.normalized;
     }
 
     void UpdateEnemyVelocity()
