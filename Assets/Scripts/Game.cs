@@ -14,8 +14,6 @@ public class Game : MonoBehaviour
     [SerializeField]
     GameObject projNextObj;
 
-    bool linearPath = false;
-
     [SerializeField]
     float ahead;
 
@@ -23,10 +21,12 @@ public class Game : MonoBehaviour
     int curr = 0;
     int next = 1;
 
+    bool linearPath = false;
+
     void Start()
     {
         if (linearPath)
-            UpdateEnemyVelocity();
+            SnapEnemy();
     }
 
     void Update()
@@ -35,7 +35,7 @@ public class Game : MonoBehaviour
         {
             linearPath = !linearPath;
             if (linearPath)
-                UpdateEnemyVelocity();
+                SnapEnemy();
         }
 
         if (linearPath)
@@ -46,7 +46,7 @@ public class Game : MonoBehaviour
                 next++;
                 curr %= waypoints.Length;
                 next %= waypoints.Length;
-                UpdateEnemyVelocity();
+                SnapEnemy();
             }
         }
         else
@@ -58,7 +58,6 @@ public class Game : MonoBehaviour
             projCurrObj.transform.position = projCurr;
             projNextObj.transform.position = projNext;
 
-            // Check if projNext is outside the line segment. If so, advance waypoints!
             float t = Steering.ScalarProjectPointLine(A, B, projNext);
             if (t > 1.0f)
             {
@@ -68,37 +67,33 @@ public class Game : MonoBehaviour
                 next %= waypoints.Length;
             }
 
-            Rigidbody2D rb = enemy.GetComponent<Rigidbody2D>();
-            Vector3 seekForce = Steering.Seek(enemy, projNext, speed);
-            rb.AddForce(seekForce);
-            enemy.transform.up = rb.linearVelocity.normalized;
+            // Path-seek
+            EnemySeek(projNext);
         }
 
+        // Orient enemy in its direction of motion
+        enemy.transform.up = enemy.gameObject.GetComponent<Rigidbody2D>().linearVelocity.normalized;
         Debug.DrawLine(enemy.transform.position, enemy.transform.position + enemy.transform.up * 5.0f);
+
+        // Mouse-seek
+        //EnemySeek(Camera.main.ScreenToWorldPoint(Input.mousePosition));
     }
 
-    void UpdateEnemyVelocity()
+    void SnapEnemy()
     {
+        Rigidbody2D rb = enemy.gameObject.GetComponent<Rigidbody2D>();
         Vector3 A = waypoints[curr].transform.position;
         Vector3 B = waypoints[next].transform.position;
         projCurrObj.transform.position = A;
         projNextObj.transform.position = B;
-
-        Rigidbody2D rb = enemy.GetComponent<Rigidbody2D>();
         rb.linearVelocity = (B - A).normalized * speed;
-        enemy.transform.up = rb.linearVelocity.normalized;
-        enemy.transform.position = A;
+        rb.position = A;
     }
 
-    void SeekMouse()
+    void EnemySeek(Vector2 target)
     {
-        // Move our enemy along a curve
-        Rigidbody2D rb = enemy.GetComponent<Rigidbody2D>();
-        Vector2 mouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector3 seekForce = Steering.Seek(enemy, mouse, 10.0f);
+        Vector3 seekForce = Steering.Seek(enemy, target, speed);
+        Rigidbody2D rb = enemy.gameObject.GetComponent<Rigidbody2D>();
         rb.AddForce(seekForce);
-
-        // Orient our enemy in its direction of motion!
-        enemy.transform.up = rb.linearVelocity.normalized;
     }
 }
