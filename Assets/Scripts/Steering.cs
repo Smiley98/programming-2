@@ -9,4 +9,18 @@ public static class Steering
         Vector3 acceleration = desiredVelocity - currentVelocity;
         return acceleration;
     }
+
+    public static Vector3 ProjectPointLine(Vector3 A, Vector3 B, Vector3 P)
+    {
+        Vector3 AB = B - A;
+        float t = Vector3.Dot(P - A, AB) / Vector3.Dot(AB, AB);
+        return A + AB * Mathf.Clamp(t, 0.0f, 1.0f);
+    }
+
+    public static float ScalarProjectPointLine(Vector3 A, Vector3 B, Vector3 P)
+    {
+        Vector3 AB = B - A;
+        float t = Vector3.Dot(P - A, AB) / Vector3.Dot(AB, AB);
+        return t;
+    }
 }
