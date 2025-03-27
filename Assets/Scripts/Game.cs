@@ -8,31 +8,32 @@ public class Game : MonoBehaviour
     [SerializeField]
     GameObject enemy;
 
-    float time = 0.0f;
+    float speed = 5.0f;
     int curr = 0;
     int next = 1;
 
     void Start()
     {
-        
+        UpdateEnemyVelocity();
     }
 
     void Update()
     {
-        float dt = Time.deltaTime;
-        time += dt;
-        if (time > 1.0f)
+        if (Vector3.Distance(enemy.transform.position, waypoints[next].transform.position) <= 0.5f)
         {
-            time = 0.0f;
             curr++;
             next++;
             curr %= waypoints.Length;
             next %= waypoints.Length;
+            UpdateEnemyVelocity();
         }
+    }
 
+    void UpdateEnemyVelocity()
+    {
         Vector3 A = waypoints[curr].transform.position;
         Vector3 B = waypoints[next].transform.position;
-        Vector3 P = Vector3.Lerp(A, B, time);
-        enemy.transform.position = P;
+        enemy.transform.position = A;
+        enemy.GetComponent<Rigidbody2D>().linearVelocity = (B - A).normalized * speed;
     }
 }
