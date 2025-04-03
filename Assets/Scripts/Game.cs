@@ -57,7 +57,7 @@ public class Game : MonoBehaviour
             Vector3 projNext = projCurr + (B - A).normalized * ahead;
             projCurrObj.transform.position = projCurr;
             projNextObj.transform.position = projNext;
-
+            
             float t = Steering.ScalarProjectPointLine(A, B, projNext);
             if (t > 1.0f)
             {
@@ -66,13 +66,13 @@ public class Game : MonoBehaviour
                 curr %= waypoints.Length;
                 next %= waypoints.Length;
             }
-
+            
             // Path-seek
             EnemySeek(projNext);
         }
 
         // Orient enemy in its direction of motion
-        enemy.transform.up = enemy.gameObject.GetComponent<Rigidbody2D>().linearVelocity.normalized;
+        enemy.transform.up = enemy.gameObject.GetComponent<Rigidbody2D>().velocity.normalized;
         Debug.DrawLine(enemy.transform.position, enemy.transform.position + enemy.transform.up * 5.0f);
 
         // Mouse-seek
@@ -86,7 +86,7 @@ public class Game : MonoBehaviour
         Vector3 B = waypoints[next].transform.position;
         projCurrObj.transform.position = A;
         projNextObj.transform.position = B;
-        rb.linearVelocity = (B - A).normalized * speed;
+        rb.velocity = (B - A).normalized * speed;
         rb.position = A;
     }
 
