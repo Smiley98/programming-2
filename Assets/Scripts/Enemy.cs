@@ -36,6 +36,10 @@ public class Enemy : MonoBehaviour
         weapon.shootTotal = 0.5f;
         weapon.shooter = gameObject;
         weapon.weaponPrefab = weaponPrefab;
+
+        weapon.speed = 10.0f;
+        weapon.damage = 25.0f;
+        weapon.color = GetComponent<SpriteRenderer>().color;
     }
 
     void Update()
@@ -76,7 +80,7 @@ public class Enemy : MonoBehaviour
     {
         Vector3 force = Steering.Seek(gameObject, player.transform.position, moveSpeed);
         rb.AddForce(force);
-        weapon.Shoot((player.transform.position - transform.position).normalized, 10.0f);
+        weapon.Shoot((player.transform.position - transform.position).normalized);
     }
 
     void Avoid()

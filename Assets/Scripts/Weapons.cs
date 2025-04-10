@@ -10,35 +10,43 @@ public enum WeaponType
 
 public abstract class Weapon
 {
-    // "How do we want *ALL* bullets to behave?" -- Each have a unique direction & speed
-    public abstract void Shoot(Vector3 direction, float speed);
+    public abstract void Shoot(Vector3 direction);
 
     public void Tick()
     {
         shootCurrent += Time.deltaTime;
     }
 
-    // "How do we want *ALL* weapons to behave?" -- Each weapon needs a prefab, and a shooter
     public GameObject weaponPrefab;
     public GameObject shooter;
 
     public float shootCurrent;  // How far into our shoot cooldown
     public float shootTotal;    // How long it take to shoot
+
+    public float damage;
+    public float speed;
+    public Color color;
+
+    protected GameObject CreateBullet(Vector3 direction)
+    {
+        GameObject bullet = GameObject.Instantiate(weaponPrefab);
+        bullet.transform.position = shooter.transform.position + direction * 0.75f;
+        bullet.GetComponent<Rigidbody2D>().linearVelocity = direction * speed;
+        bullet.GetComponent<SpriteRenderer>().color = color;
+        bullet.GetComponent<Projectile>().damage = damage;
+        return bullet;
+    }
 }
 
 public class Rifle : Weapon
 {
-    public override void Shoot(Vector3 direction, float speed)
+    public override void Shoot(Vector3 direction)
     {
         if (shootCurrent >= shootTotal)
         {
             shootCurrent = 0.0f;
 
-            GameObject bullet = GameObject.Instantiate(weaponPrefab);
-            bullet.transform.position = shooter.transform.position + direction * 0.75f;
-            bullet.GetComponent<Rigidbody2D>().linearVelocity = direction * speed;
-            bullet.GetComponent<SpriteRenderer>().color = Color.red;
-            bullet.GetComponent<Projectile>().damage = 25.0f;
+            GameObject bullet = CreateBullet(direction);
             GameObject.Destroy(bullet, 1.0f);
         }
     }
@@ -46,34 +54,18 @@ public class Rifle : Weapon
 
 public class Shotgun : Weapon
 {
-    public override void Shoot(Vector3 direction, float speed)
+    public override void Shoot(Vector3 direction)
     {
         if (shootCurrent >= shootTotal)
         {
             shootCurrent = 0.0f;
 
-            GameObject bullet = GameObject.Instantiate(weaponPrefab);
-            GameObject bulletLeft = GameObject.Instantiate(weaponPrefab);
-            GameObject bulletRight = GameObject.Instantiate(weaponPrefab);
-
             Vector3 directionLeft = Quaternion.Euler(0.0f, 0.0f, 20.0f) * direction;
             Vector3 directionRight = Quaternion.Euler(0.0f, 0.0f, -20.0f) * direction;
 
-            bullet.transform.position = shooter.transform.position + direction * 0.75f;
-            bulletLeft.transform.position = shooter.transform.position + directionLeft * 0.75f;
-            bulletRight.transform.position = shooter.transform.position + directionRight * 0.75f;
-
-            bullet.GetComponent<Rigidbody2D>().linearVelocity = direction * speed;
-            bulletLeft.GetComponent<Rigidbody2D>().linearVelocity = directionLeft * speed;
-            bulletRight.GetComponent<Rigidbody2D>().linearVelocity = directionRight * speed;
-
-            bullet.GetComponent<SpriteRenderer>().color = Color.green;
-            bulletLeft.GetComponent<SpriteRenderer>().color = Color.green;
-            bulletRight.GetComponent<SpriteRenderer>().color = Color.green;
-
-            bullet.GetComponent<Projectile>().damage = 25.0f;
-            bulletLeft.GetComponent<Projectile>().damage = 25.0f;
-            bulletRight.GetComponent<Projectile>().damage = 25.0f;
+            GameObject bullet = CreateBullet(direction);
+            GameObject bulletLeft = CreateBullet(directionLeft);
+            GameObject bulletRight = CreateBullet(directionRight);
 
             GameObject.Destroy(bullet, 1.0f);
             GameObject.Destroy(bulletLeft, 1.0f);
@@ -154,7 +146,7 @@ public class Weapons : MonoBehaviour
             if (weapon.shootCurrent >= weapon.shootTotal/*Add a check to make sure there are bullets in your clip*/)
             {
                 weapon.shootCurrent = 0.0f;
-                weapon.Shoot(mouseDirection, bulletSpeed);
+                weapon.Shoot(mouseDirection);
 
                 // TODO: Subtract from clip size after shooting
                 // TODO: Add reload timer

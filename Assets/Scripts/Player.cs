@@ -13,6 +13,10 @@ public class Player : MonoBehaviour
         weapon.shootTotal = 0.25f;
         weapon.shooter = gameObject;
         weapon.weaponPrefab = weaponPrefab;
+
+        weapon.speed = 10.0f;
+        weapon.damage = 25.0f;
+        weapon.color = GetComponent<SpriteRenderer>().color;
     }
 
     void Update()
@@ -52,7 +56,7 @@ public class Player : MonoBehaviour
         Debug.DrawLine(transform.position, transform.position + direction * 5.0f, GetComponent<SpriteRenderer>().color);
 
         if (Input.GetKey(KeyCode.Space))
-            weapon.Shoot(direction, 10.0f);
+            weapon.Shoot(direction);
         weapon.Tick();
     }
 }
