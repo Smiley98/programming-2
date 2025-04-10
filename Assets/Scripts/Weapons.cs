@@ -13,6 +13,11 @@ public abstract class Weapon
     // "How do we want *ALL* bullets to behave?" -- Each have a unique direction & speed
     public abstract void Shoot(Vector3 direction, float speed);
 
+    public void Tick()
+    {
+        shootCurrent += Time.deltaTime;
+    }
+
     // "How do we want *ALL* weapons to behave?" -- Each weapon needs a prefab, and a shooter
     public GameObject weaponPrefab;
     public GameObject shooter;
@@ -25,8 +30,6 @@ public class Rifle : Weapon
 {
     public override void Shoot(Vector3 direction, float speed)
     {
-        // (Note that this only ticks when we try and fire our weapon which is not exactly correct)
-        shootCurrent += Time.deltaTime;
         if (shootCurrent >= shootTotal)
         {
             shootCurrent = 0.0f;

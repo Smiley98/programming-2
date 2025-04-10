@@ -40,6 +40,7 @@ public class Enemy : MonoBehaviour
 
     void Update()
     {
+        weapon.Tick();
         UpdateState();
         switch (state)
         {
