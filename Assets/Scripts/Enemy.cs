@@ -16,6 +16,11 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     GameObject player;
 
+    [SerializeField]
+    GameObject weaponPrefab;
+
+    Weapon weapon = null;
+
     enum State
     {
         PATROL,
@@ -26,6 +31,11 @@ public class Enemy : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+
+        weapon = new Rifle();
+        weapon.shootTotal = 0.5f;
+        weapon.shooter = gameObject;
+        weapon.weaponPrefab = weaponPrefab;
     }
 
     void Update()
@@ -42,7 +52,7 @@ public class Enemy : MonoBehaviour
                 break;
         }
         Avoid();
-        transform.up = Vector3.RotateTowards(transform.up, rb.velocity.normalized, turnSpeed * Time.deltaTime, 0.0f);
+        transform.up = Vector3.RotateTowards(transform.up, rb.linearVelocity.normalized, turnSpeed * Time.deltaTime, 0.0f);
         //Debug.DrawLine(transform.position, transform.position + transform.up * 5.0f, Color.green);
     }
 
@@ -65,6 +75,7 @@ public class Enemy : MonoBehaviour
     {
         Vector3 force = Steering.Seek(gameObject, player.transform.position, moveSpeed);
         rb.AddForce(force);
+        weapon.Shoot((player.transform.position - transform.position).normalized, 10.0f);
     }
 
     void Avoid()

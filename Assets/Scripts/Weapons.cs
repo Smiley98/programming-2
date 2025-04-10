@@ -17,12 +17,6 @@ public abstract class Weapon
     public GameObject weaponPrefab;
     public GameObject shooter;
 
-    public int ammoCount;    // How much amo is currently in our clip
-    public int ammoMax;      // How much amo does our clip hold
-
-    public float reloadCurrent; // How far into our reload cooldown
-    public float reloadTotal;   // How long it takes to reload
-
     public float shootCurrent;  // How far into our shoot cooldown
     public float shootTotal;    // How long it take to shoot
 }
@@ -31,12 +25,19 @@ public class Rifle : Weapon
 {
     public override void Shoot(Vector3 direction, float speed)
     {
-        GameObject bullet = GameObject.Instantiate(weaponPrefab);
-        bullet.transform.position = shooter.transform.position + direction * 0.75f;
-        bullet.GetComponent<Rigidbody2D>().velocity = direction * speed;
-        bullet.GetComponent<SpriteRenderer>().color = Color.red;
-        bullet.GetComponent<Projectile>().damage = 25.0f;
-        GameObject.Destroy(bullet, 1.0f);
+        // (Note that this only ticks when we try and fire our weapon which is not exactly correct)
+        shootCurrent += Time.deltaTime;
+        if (shootCurrent >= shootTotal)
+        {
+            shootCurrent = 0.0f;
+
+            GameObject bullet = GameObject.Instantiate(weaponPrefab);
+            bullet.transform.position = shooter.transform.position + direction * 0.75f;
+            bullet.GetComponent<Rigidbody2D>().linearVelocity = direction * speed;
+            bullet.GetComponent<SpriteRenderer>().color = Color.red;
+            bullet.GetComponent<Projectile>().damage = 25.0f;
+            GameObject.Destroy(bullet, 1.0f);
+        }
     }
 }
 
@@ -174,7 +175,7 @@ public class Weapons : MonoBehaviour
     {
         GameObject bullet = Instantiate(bulletPrefab);
         bullet.transform.position = transform.position + direction * 0.75f;
-        bullet.GetComponent<Rigidbody2D>().velocity = direction * bulletSpeed;
+        bullet.GetComponent<Rigidbody2D>().linearVelocity = direction * bulletSpeed;
         bullet.GetComponent<SpriteRenderer>().color = Color.red;
         Destroy(bullet, 1.0f);
     }
@@ -192,9 +193,9 @@ public class Weapons : MonoBehaviour
         bulletLeft.transform.position = transform.position + directionLeft * 0.75f;
         bulletRight.transform.position = transform.position + directionRight * 0.75f;
 
-        bullet.GetComponent<Rigidbody2D>().velocity = direction * bulletSpeed;
-        bulletLeft.GetComponent<Rigidbody2D>().velocity = directionLeft * bulletSpeed;
-        bulletRight.GetComponent<Rigidbody2D>().velocity = directionRight * bulletSpeed;
+        bullet.GetComponent<Rigidbody2D>().linearVelocity = direction * bulletSpeed;
+        bulletLeft.GetComponent<Rigidbody2D>().linearVelocity = directionLeft * bulletSpeed;
+        bulletRight.GetComponent<Rigidbody2D>().linearVelocity = directionRight * bulletSpeed;
 
         bullet.GetComponent <SpriteRenderer>().color = Color.green;
         bulletLeft.GetComponent <SpriteRenderer>().color = Color.green;
@@ -209,7 +210,7 @@ public class Weapons : MonoBehaviour
     {
         GameObject grenade = Instantiate(grenadePrefab);
         grenade.transform.position = transform.position + direction * 0.75f;
-        grenade.GetComponent<Rigidbody2D>().velocity = direction * bulletSpeed;
+        grenade.GetComponent<Rigidbody2D>().linearVelocity = direction * bulletSpeed;
         Destroy(grenade, 1.0f);
     }
     */
