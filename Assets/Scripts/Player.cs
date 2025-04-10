@@ -6,16 +6,21 @@ public class Player : MonoBehaviour
     GameObject weaponPrefab;
 
     Weapon weapon = null;
+    Weapon fastShotgun = null;
+    Weapon slowShotgun = null;
 
     void Start()
     {
         weapon = new Shotgun();
+
         weapon.shootTotal = 0.25f;
         weapon.shooter = gameObject;
         weapon.weaponPrefab = weaponPrefab;
 
+        weapon.life = 1.0f;
         weapon.speed = 10.0f;
         weapon.damage = 25.0f;
+
         weapon.color = GetComponent<SpriteRenderer>().color;
     }
 

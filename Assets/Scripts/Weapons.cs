@@ -23,17 +23,23 @@ public abstract class Weapon
     public float shootCurrent;  // How far into our shoot cooldown
     public float shootTotal;    // How long it take to shoot
 
-    public float damage;
+    public float life;
     public float speed;
+    public float damage;
     public Color color;
 
     protected GameObject CreateBullet(Vector3 direction)
     {
         GameObject bullet = GameObject.Instantiate(weaponPrefab);
-        bullet.transform.position = shooter.transform.position + direction * 0.75f;
+        float bulletRadius = bullet.transform.localScale.x * 0.5f;
+        float shooterRadius = shooter.transform.localScale.x * 0.5f;
+
+        bullet.transform.position = shooter.transform.position + direction * (bulletRadius + shooterRadius) * 1.25f;
         bullet.GetComponent<Rigidbody2D>().linearVelocity = direction * speed;
         bullet.GetComponent<SpriteRenderer>().color = color;
         bullet.GetComponent<Projectile>().damage = damage;
+
+        GameObject.Destroy(bullet, life);
         return bullet;
     }
 }
@@ -45,9 +51,7 @@ public class Rifle : Weapon
         if (shootCurrent >= shootTotal)
         {
             shootCurrent = 0.0f;
-
-            GameObject bullet = CreateBullet(direction);
-            GameObject.Destroy(bullet, 1.0f);
+            CreateBullet(direction);
         }
     }
 }
@@ -63,13 +67,9 @@ public class Shotgun : Weapon
             Vector3 directionLeft = Quaternion.Euler(0.0f, 0.0f, 20.0f) * direction;
             Vector3 directionRight = Quaternion.Euler(0.0f, 0.0f, -20.0f) * direction;
 
-            GameObject bullet = CreateBullet(direction);
-            GameObject bulletLeft = CreateBullet(directionLeft);
-            GameObject bulletRight = CreateBullet(directionRight);
-
-            GameObject.Destroy(bullet, 1.0f);
-            GameObject.Destroy(bulletLeft, 1.0f);
-            GameObject.Destroy(bulletRight, 1.0f);
+            CreateBullet(direction);
+            CreateBullet(directionLeft);
+            CreateBullet(directionRight);
         }
     }
 }

@@ -37,8 +37,10 @@ public class Enemy : MonoBehaviour
         weapon.shooter = gameObject;
         weapon.weaponPrefab = weaponPrefab;
 
+        weapon.life = 1.0f;
         weapon.speed = 10.0f;
         weapon.damage = 25.0f;
+
         weapon.color = GetComponent<SpriteRenderer>().color;
     }
 
