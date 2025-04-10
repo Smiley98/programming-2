@@ -9,16 +9,13 @@ public enum Team
 
 public class Projectile : MonoBehaviour
 {
-    public float damage = 0.0f;
+    public float damage;
     public Team team = Team.NONE;
 
     void OnTriggerEnter2D(Collider2D collision)
     {
         if (team == Team.NONE)
             Debug.LogError("Bullet team uninitialized");
-
-        if (collision.CompareTag("Bullet"))
-            return;
 
         if (team == Team.PLAYER && collision.CompareTag("Player"))
             return;

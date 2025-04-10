@@ -6,30 +6,29 @@ public class Player : MonoBehaviour
     GameObject weaponPrefab;
 
     Weapon weapon = null;
-    Team team = Team.PLAYER;
 
     public float health = 100.0f;
 
     void Start()
     {
-        weapon = new Shotgun();
-
-        weapon.shootTotal = 0.25f;
-        weapon.shooter = gameObject;
+        weapon = new Rifle();
         weapon.weaponPrefab = weaponPrefab;
+        weapon.shooter = gameObject;
 
+        weapon.shootTotal = 0.2f;
+        weapon.damage = 5.0f;
         weapon.life = 1.0f;
         weapon.speed = 10.0f;
-        weapon.damage = 25.0f;
 
         weapon.color = GetComponent<SpriteRenderer>().color;
-        weapon.team = team;
+        weapon.team = Team.PLAYER;
     }
 
     void Update()
     {
         Move();
         Shoot();
+
         if (health <= 0.0f)
             Debug.Log("Player died :(");
     }
@@ -58,6 +57,8 @@ public class Player : MonoBehaviour
 
     void Shoot()
     {
+        weapon.Tick();
+
         Vector3 mouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mouse.z = 0.0f;
 
@@ -66,6 +67,5 @@ public class Player : MonoBehaviour
 
         if (Input.GetKey(KeyCode.Space))
             weapon.Shoot(direction);
-        weapon.Tick();
     }
 }

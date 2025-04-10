@@ -424,6 +424,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponPrefab: {fileID: 4779383841538616724, guid: 004b644b06541d34dbeaa6b64ac32a93, type: 3}
+  health: 100
 --- !u!58 &714851335
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -1044,6 +1045,7 @@ MonoBehaviour:
   - {fileID: 441042393}
   player: {fileID: 714851331}
   weaponPrefab: {fileID: 4779383841538616724, guid: 004b644b06541d34dbeaa6b64ac32a93, type: 3}
+  health: 50
 --- !u!1001 &1748504070
 PrefabInstance:
   m_ObjectHideFlags: 0

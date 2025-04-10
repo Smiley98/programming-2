@@ -21,31 +21,30 @@ public class Enemy : MonoBehaviour
 
     Weapon weapon = null;
 
+    public float health = 50.0f;
+
     enum State
     {
         PATROL,
         ATTACK
     }
     State state = State.PATROL;
-    Team team = Team.ENEMY;
-
-    public float health = 50.0f;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
 
-        weapon = new Rifle();
-        weapon.shootTotal = 0.5f;
-        weapon.shooter = gameObject;
+        weapon = new Shotgun();
         weapon.weaponPrefab = weaponPrefab;
+        weapon.shooter = gameObject;
 
-        weapon.life = 1.0f;
-        weapon.speed = 10.0f;
+        weapon.shootTotal = 0.25f;
         weapon.damage = 25.0f;
+        weapon.life = 0.75f;
+        weapon.speed = 15.0f;
 
         weapon.color = GetComponent<SpriteRenderer>().color;
-        weapon.team = team;
+        weapon.team = Team.ENEMY;
     }
 
     void Update()
