@@ -28,6 +28,8 @@ public abstract class Weapon
     public float damage;
     public Color color;
 
+    public Team team = Team.NONE;
+
     protected GameObject CreateBullet(Vector3 direction)
     {
         GameObject bullet = GameObject.Instantiate(weaponPrefab);
@@ -37,7 +39,10 @@ public abstract class Weapon
         bullet.transform.position = shooter.transform.position + direction * (bulletRadius + shooterRadius) * 1.25f;
         bullet.GetComponent<Rigidbody2D>().linearVelocity = direction * speed;
         bullet.GetComponent<SpriteRenderer>().color = color;
-        bullet.GetComponent<Projectile>().damage = damage;
+
+        Projectile projectile = bullet.GetComponent<Projectile>();
+        projectile.damage = damage;
+        projectile.team = team;
 
         GameObject.Destroy(bullet, life);
         return bullet;

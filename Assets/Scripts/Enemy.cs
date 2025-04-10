@@ -27,6 +27,9 @@ public class Enemy : MonoBehaviour
         ATTACK
     }
     State state = State.PATROL;
+    Team team = Team.ENEMY;
+
+    public float health = 50.0f;
 
     void Start()
     {
@@ -42,6 +45,7 @@ public class Enemy : MonoBehaviour
         weapon.damage = 25.0f;
 
         weapon.color = GetComponent<SpriteRenderer>().color;
+        weapon.team = team;
     }
 
     void Update()
@@ -61,6 +65,9 @@ public class Enemy : MonoBehaviour
         Avoid();
         transform.up = Vector3.RotateTowards(transform.up, rb.linearVelocity.normalized, turnSpeed * Time.deltaTime, 0.0f);
         //Debug.DrawLine(transform.position, transform.position + transform.up * 5.0f, Color.green);
+
+        if (health <= 0.0f)
+            Debug.Log("Enemy died :)");
     }
 
     void UpdateState()

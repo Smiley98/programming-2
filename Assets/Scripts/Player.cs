@@ -6,8 +6,9 @@ public class Player : MonoBehaviour
     GameObject weaponPrefab;
 
     Weapon weapon = null;
-    Weapon fastShotgun = null;
-    Weapon slowShotgun = null;
+    Team team = Team.PLAYER;
+
+    public float health = 100.0f;
 
     void Start()
     {
@@ -22,12 +23,15 @@ public class Player : MonoBehaviour
         weapon.damage = 25.0f;
 
         weapon.color = GetComponent<SpriteRenderer>().color;
+        weapon.team = team;
     }
 
     void Update()
     {
         Move();
         Shoot();
+        if (health <= 0.0f)
+            Debug.Log("Player died :(");
     }
 
     void Move()
