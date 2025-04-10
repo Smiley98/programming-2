@@ -2,7 +2,26 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    [SerializeField]
+    GameObject weaponPrefab;
+
+    Weapon weapon = null;
+
+    void Start()
+    {
+        weapon = new Rifle();
+        weapon.shootTotal = 0.25f;
+        weapon.shooter = gameObject;
+        weapon.weaponPrefab = weaponPrefab;
+    }
+
     void Update()
+    {
+        Move();
+        Shoot();
+    }
+
+    void Move()
     {
         Vector3 direction = Vector3.zero;
         if (Input.GetKey(KeyCode.W))
@@ -22,5 +41,16 @@ public class Player : MonoBehaviour
             direction += Vector3.right;
         }
         transform.position += direction * 5.0f * Time.deltaTime;
+    }
+
+    void Shoot()
+    {
+        Vector3 mouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        mouse.z = 0.0f;
+
+        Vector3 direction = (mouse - transform.position).normalized;
+        if (Input.GetKey(KeyCode.Space))
+            weapon.Shoot(direction, 10.0f);
+        weapon.Tick();
     }
 }
