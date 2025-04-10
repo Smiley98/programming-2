@@ -9,7 +9,7 @@ public class Player : MonoBehaviour
 
     void Start()
     {
-        weapon = new Rifle();
+        weapon = new Shotgun();
         weapon.shootTotal = 0.25f;
         weapon.shooter = gameObject;
         weapon.weaponPrefab = weaponPrefab;
@@ -49,6 +49,8 @@ public class Player : MonoBehaviour
         mouse.z = 0.0f;
 
         Vector3 direction = (mouse - transform.position).normalized;
+        Debug.DrawLine(transform.position, transform.position + direction * 5.0f, GetComponent<SpriteRenderer>().color);
+
         if (Input.GetKey(KeyCode.Space))
             weapon.Shoot(direction, 10.0f);
         weapon.Tick();

@@ -44,6 +44,44 @@ public class Rifle : Weapon
     }
 }
 
+public class Shotgun : Weapon
+{
+    public override void Shoot(Vector3 direction, float speed)
+    {
+        if (shootCurrent >= shootTotal)
+        {
+            shootCurrent = 0.0f;
+
+            GameObject bullet = GameObject.Instantiate(weaponPrefab);
+            GameObject bulletLeft = GameObject.Instantiate(weaponPrefab);
+            GameObject bulletRight = GameObject.Instantiate(weaponPrefab);
+
+            Vector3 directionLeft = Quaternion.Euler(0.0f, 0.0f, 20.0f) * direction;
+            Vector3 directionRight = Quaternion.Euler(0.0f, 0.0f, -20.0f) * direction;
+
+            bullet.transform.position = shooter.transform.position + direction * 0.75f;
+            bulletLeft.transform.position = shooter.transform.position + directionLeft * 0.75f;
+            bulletRight.transform.position = shooter.transform.position + directionRight * 0.75f;
+
+            bullet.GetComponent<Rigidbody2D>().linearVelocity = direction * speed;
+            bulletLeft.GetComponent<Rigidbody2D>().linearVelocity = directionLeft * speed;
+            bulletRight.GetComponent<Rigidbody2D>().linearVelocity = directionRight * speed;
+
+            bullet.GetComponent<SpriteRenderer>().color = Color.green;
+            bulletLeft.GetComponent<SpriteRenderer>().color = Color.green;
+            bulletRight.GetComponent<SpriteRenderer>().color = Color.green;
+
+            bullet.GetComponent<Projectile>().damage = 25.0f;
+            bulletLeft.GetComponent<Projectile>().damage = 25.0f;
+            bulletRight.GetComponent<Projectile>().damage = 25.0f;
+
+            GameObject.Destroy(bullet, 1.0f);
+            GameObject.Destroy(bulletLeft, 1.0f);
+            GameObject.Destroy(bulletRight, 1.0f);
+        }
+    }
+}
+
 public class Weapons : MonoBehaviour
 {
     [SerializeField]
