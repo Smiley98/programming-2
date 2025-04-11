@@ -21,8 +21,9 @@ Shader "Unlit/NormalsShader"
             {
                 v2f o;
                 o.pos = UnityObjectToClipPos(vertex);
-                o.worldNormal = UnityObjectToWorldNormal(normal);   // <-- world-space
-                //o.worldNormal = normal;                           // <-- object-space
+                // You want to output your normals in world-space otherwise your lighting will not work!
+                //o.worldNormal = UnityObjectToWorldNormal(normal);     // <-- world-space
+                o.worldNormal = normal;                                 // <-- object-space
                 return o;
             }
             
@@ -31,7 +32,7 @@ Shader "Unlit/NormalsShader"
                 // [-1, 1] by default. Can convert to [0, 1] via * 0.5 + 0.5 if we want.
                 // Best left in [-1, 1] to debug topology.
                 fixed4 c = 0;
-                c.rgb = i.worldNormal;
+                c.rgb = i.worldNormal * 0.5 + 0.5;
                 return c;
             }
             ENDCG
