@@ -5,27 +5,46 @@ public class Player : MonoBehaviour
     [SerializeField]
     GameObject weaponPrefab;
 
-    Weapon weapon = null;
+    Weapon[] weapons = new Weapon[2];
+    int selected = 0;
 
     public float health = 100.0f;
 
     void Start()
     {
-        weapon = new Rifle();
-        weapon.weaponPrefab = weaponPrefab;
-        weapon.shooter = gameObject;
+        weapons[0] = new Rifle();
+        weapons[0].weaponPrefab = weaponPrefab;
+        weapons[0].shooter = gameObject;
+        
+        weapons[0].shootTotal = 0.2f;
+        weapons[0].damage = 5.0f;
+        weapons[0].life = 1.0f;
+        weapons[0].speed = 10.0f;
+        
+        weapons[0].color = GetComponent<SpriteRenderer>().color;
+        weapons[0].team = Team.PLAYER;
 
-        weapon.shootTotal = 0.2f;
-        weapon.damage = 5.0f;
-        weapon.life = 1.0f;
-        weapon.speed = 10.0f;
+        weapons[1] = new Shotgun();
+        weapons[1].weaponPrefab = weaponPrefab;
+        weapons[1].shooter = gameObject;
 
-        weapon.color = GetComponent<SpriteRenderer>().color;
-        weapon.team = Team.PLAYER;
+        weapons[1].shootTotal = 0.2f;
+        weapons[1].damage = 5.0f;
+        weapons[1].life = 1.0f;
+        weapons[1].speed = 10.0f;
+
+        weapons[1].color = GetComponent<SpriteRenderer>().color;
+        weapons[1].team = Team.PLAYER;
     }
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            selected++;
+            selected %= weapons.Length;
+        }
+
         Move();
         Shoot();
 
@@ -57,6 +76,7 @@ public class Player : MonoBehaviour
 
     void Shoot()
     {
+        Weapon weapon = weapons[selected];
         weapon.Tick();
 
         Vector3 mouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
