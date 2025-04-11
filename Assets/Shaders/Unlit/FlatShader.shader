@@ -1,44 +1,36 @@
+// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
 Shader "Unlit/FlatShader"
 {
+    Properties
+    {
+        // Color property for material inspector, default to white
+        _Color ("Main Color", Color) = (1,1,1,1)
+    }
     SubShader
     {
-        Tags { "RenderType"="Opaque" }
-        LOD 100
-
         Pass
         {
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
-            // make fog work
-            #pragma multi_compile_fog
-
-            #include "UnityCG.cginc"
-
-            struct appdata
+            
+            // vertex shader
+            // this time instead of using "appdata" struct, just spell inputs manually,
+            // and instead of returning v2f struct, also just return a single output
+            // float4 clip position
+            float4 vert (float4 vertex : POSITION) : SV_POSITION
             {
-                float4 vertex : POSITION;
-                float2 uv : TEXCOORD0;
-            };
-
-            struct v2f
-            {
-                float2 uv : TEXCOORD0;
-                float4 vertex : SV_POSITION;
-            };
-
-            v2f vert (appdata v)
-            {
-                v2f o;
-                o.vertex = UnityObjectToClipPos(v.vertex);
-                o.uv = v.uv;
-                return o;
+                return UnityObjectToClipPos(vertex);
             }
+            
+            // color from the material
+            fixed4 _Color;
 
-            fixed4 frag (v2f i) : SV_Target
+            // pixel shader, no inputs needed
+            fixed4 frag () : SV_Target
             {
-                fixed4 col = fixed4(1.0, 0.0, 0.0, 1.0);
-                return col;
+                return _Color; // just return it
             }
             ENDCG
         }
